@@ -13,4 +13,10 @@ class CriteriaUtils
         return Criteria::create()
             ->where(Criteria::expr()->contains('recipe.name', '%' . $name . '%'));
     }
+    public static function createFilterByUserName(string $name): Criteria
+    {
+        return Criteria::create()
+            ->where(Criteria::expr()->contains('user.fullName', '%' . $name . '%'));
+    }
+
 }

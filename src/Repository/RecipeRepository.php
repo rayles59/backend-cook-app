@@ -117,8 +117,14 @@ class RecipeRepository extends ServiceEntityRepository implements RepositoryInte
     public function findRecipeByFilters(array $params): array
     {
         $qb = $this->createQueryBuilder('recipe')
-            ->innerJoin('recipe.ingredients', 'ingredient');
+            ->leftJoin('recipe.ingredients', 'ingredient')
+            ->leftJoin('recipe.users', 'user')
+            ->leftJoin('recipe.likes', 'likes');
+
         $qb = $this->filterByValue($qb, $params);
+
+        $qb->groupBy('recipe.id')
+            ->orderBy('COUNT(likes.isLike)','DESC');
 
         return $qb->getQuery()->getResult();
     }
@@ -128,19 +134,36 @@ class RecipeRepository extends ServiceEntityRepository implements RepositoryInte
      */
     private function filterByValue(QueryBuilder $qb, array $params): QueryBuilder
     {
+        $qb = $this->filterByRecipeName($qb, $params);
+        $qb = $this->filterByUserName($qb, $params);
+        $qb = $this->filterByIngredients($qb, $params);
+
+        return $qb;
+    }
+
+    private function filterByRecipeName(QueryBuilder $qb,array $params): QueryBuilder
+    {
         if (StringUtils::isValueNotEmptyOrNull($params['recipe_name'])) {
             $qb->addCriteria(CriteriaUtils::createFilterByRecetteName($params['recipe_name']));
         }
+        return $qb;
+    }
 
+    private function filterByUserName(QueryBuilder $qb,array $params): QueryBuilder
+    {
+        if (StringUtils::isValueNotEmptyOrNull($params['fullName'])) {
+            $qb->addCriteria(CriteriaUtils::createFilterByUserName($params['fullName']));
+        }
+
+        return $qb;
+    }
+
+    private function filterByIngredients(QueryBuilder $qb,array $params): QueryBuilder
+    {
         if (count($params['ingredients_contain'])) {
-            $ingredients = $this->ingredientManager->getIngredientsInArray($params['ingredients_contain']);
-            $qb = $this->findIngredientInListOfIngredients($qb, $ingredients);
+            //$ingredients = $this->ingredientManager->getIngredientsInArray($params['ingredients_contain']);
+            //$qb = $this->findIngredientInListOfIngredients($qb, $ingredients);
         }
-
-        if (StringUtils::isValueNotEmptyOrNull($params['recipe_name'])) {
-            $qb->addCriteria(CriteriaUtils::createFilterByRecetteName($params['recipe_name']));
-        }
-
         return $qb;
     }
 
