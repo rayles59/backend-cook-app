@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Like;
 use App\Entity\Recipe;
-use App\Service\Helper\CriteriaHelper;
+use App\Service\Utils\CriteriaHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

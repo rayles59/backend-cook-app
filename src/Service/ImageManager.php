@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Image;
 use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
-use App\Service\Helper\ConvertHelper;
+use App\Service\Utils\ConvertHelper;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;

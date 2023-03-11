@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Helper;
+namespace App\Service\Utils;
 
 use App\Entity\Recipe;
 use Doctrine\Common\Collections\Criteria;

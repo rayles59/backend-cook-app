@@ -71,20 +71,26 @@ class RecipeManager implements RecipeManagerInterface
         $this->recipeRepository->save($recipe, true);
     }
 
-    public function updateRecipe(array $recipes, int $id): Recipe
+    public function updateRecipe(array $recipes, int $id): ?Recipe
     {
         $recipe = $this->recipeRepository->findOneBy(['id' => $id]);
+        if(null !== $recipe)
+        {
+            (!empty($recipes['name'])) ? $recipe->setName($recipes['name']) : '';
+            (!empty($recipes['description'])) ? $recipe->setDescriptions($recipes['description']) : '';
+            (!empty($recipes['number_of_persons'])) ? $recipe->setNumberOfPersons($recipes['number_of_persons']) : '';
+            (!empty($recipes['creationTime'])) ? $recipe->setCreationTime($recipes['creationTime']) : '';
+            (!empty($recipes['createdAt'])) ? $recipe->setCreatedAt(new \DateTime()) : '';
+            (!empty($recipes['updatedAt'])) ? $recipe->setUpdatedAt(new \DateTime()) : '';
 
-        (!empty($recipes['name'])) ? $recipe->setName($recipes['name']) : '';
-        (!empty($recipes['description'])) ? $recipe->setDescriptions($recipes['description']) : '';
-        (!empty($recipes['number_of_persons'])) ? $recipe->setNumberOfPersons($recipes['number_of_persons']) : '';
-        (!empty($recipes['creationTime'])) ? $recipe->setCreationTime($recipes['creationTime']) : '';
-        (!empty($recipes['createdAt'])) ? $recipe->setCreatedAt(new \DateTime()) : '';
-        (!empty($recipes['updatedAt'])) ? $recipe->setUpdatedAt(new \DateTime()) : '';
+            //TODO update ingredients and category and recipeStep
+            (!empty($recipes['categories'])) ? $this->categoryManager->updateCategories($recipe,$recipes['categories']) : '';
 
-        //TODO update ingredients and category and recipeStep
+            return $recipe;
+        }
 
-        return $recipe;
+
+        return null;
     }
 
 }

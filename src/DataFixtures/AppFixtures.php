@@ -39,7 +39,7 @@ class AppFixtures extends Fixture
             $image = new Image();
 
 
-            $category->setName('VEGETARIEN');
+            $category->setName('VEGETARIEN'.$i);
             $like->setIsLike(false);
             $manager->persist($category);
 
