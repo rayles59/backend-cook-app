@@ -8,5 +8,6 @@ interface IngredientManagerInterface
 {
     public function addIngredientsFromXlsx(array $data) : bool;
     public function addIngredientsInRecipe(Recipe $recipe, array $ingredients) : void;
+    public function updateIngredients(Recipe $recipe, array $ingredients): void;
 
 }

@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Image;
 use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
-use App\Service\Utils\ConvertHelper;
+use App\Service\Utils\ConvertUtils;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
@@ -32,7 +32,7 @@ class ImageManager implements ImageManagerInterface
     {
         $image = $form->get('images') ->getData();
         foreach($image as $img){
-            if(ConvertHelper::ConvertToMo($img->getSize()) > 1){
+            if(ConvertUtils::ConvertToMo($img->getSize()) > 1){
                 $this->resize($img);
             }
 

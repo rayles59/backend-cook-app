@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Recipe;
 use App\Entity\User;
-use App\Service\Utils\CriteriaHelper;
+use App\Service\Utils\CriteriaUtils;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -61,7 +61,7 @@ class RecipeRepository extends ServiceEntityRepository implements RepositoryInte
     public function filterByRecette(string $name) : ?array
     {
         return $this->createQueryBuilder('recette')
-                    ->addCriteria(CriteriaHelper::createFilterByRecetteName($name))
+                    ->addCriteria(CriteriaUtils::createFilterByRecetteName($name))
                     ->getQuery()
                     ->getResult();
     }

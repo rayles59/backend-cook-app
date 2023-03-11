@@ -74,8 +74,7 @@ class RecipeManager implements RecipeManagerInterface
     public function updateRecipe(array $recipes, int $id): ?Recipe
     {
         $recipe = $this->recipeRepository->findOneBy(['id' => $id]);
-        if(null !== $recipe)
-        {
+        if (null !== $recipe) {
             (!empty($recipes['name'])) ? $recipe->setName($recipes['name']) : '';
             (!empty($recipes['description'])) ? $recipe->setDescriptions($recipes['description']) : '';
             (!empty($recipes['number_of_persons'])) ? $recipe->setNumberOfPersons($recipes['number_of_persons']) : '';
@@ -84,8 +83,9 @@ class RecipeManager implements RecipeManagerInterface
             (!empty($recipes['updatedAt'])) ? $recipe->setUpdatedAt(new \DateTime()) : '';
 
             //TODO update ingredients and category and recipeStep
-            (!empty($recipes['categories'])) ? $this->categoryManager->updateCategories($recipe,$recipes['categories']) : '';
-
+            (!empty($recipes['categories'])) ? $this->categoryManager->updateCategories($recipe, $recipes['categories']) : '';
+            (!empty($recipes['categories'])) ? $this->ingredientManager->updateIngredients($recipe, $recipes['ingredients']) : '';
+            (!empty($recipes['categories'])) ? $this->recipeStepManager->updateRecipeSteps($recipe, $recipes['recipeSteps']) : '';
             return $recipe;
         }
 

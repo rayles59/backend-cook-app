@@ -51,4 +51,17 @@ class IngredientManager implements IngredientManagerInterface
             }
         }
     }
+
+    public function updateIngredients(Recipe $recipe, array $ingredients): void
+    {
+        foreach ($recipe->getIngredients() as $ingredient) {
+            $recipe->removeIngredient($ingredient);
+        }
+
+        foreach ($ingredients as $ingredient) {
+            if(null !== $value = $this->ingredientRepository->findOneBy(['name' => $ingredient])) {
+                $recipe->addIngredient($value);
+            }
+        }
+    }
 }

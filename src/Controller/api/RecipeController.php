@@ -133,7 +133,7 @@ class RecipeController extends AbstractController
                 true
             );
         }
-        return new JsonResponse();
+        return new JsonResponse('', Response::HTTP_OK);
     }
 
 }

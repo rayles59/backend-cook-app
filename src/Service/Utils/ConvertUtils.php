@@ -2,7 +2,7 @@
 
 namespace App\Service\Utils;
 
-class ConvertHelper
+class ConvertUtils
 {
     public static function ConvertToMo(int $size) : int
     {
