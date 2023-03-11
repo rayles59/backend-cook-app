@@ -12,6 +12,8 @@ security:
                 property: email
 
     firewalls:
+
+
         api_token:
             security: false
             pattern: ^/token$
