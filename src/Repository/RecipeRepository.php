@@ -137,6 +137,10 @@ class RecipeRepository extends ServiceEntityRepository implements RepositoryInte
             $qb = $this->findIngredientInListOfIngredients($qb, $ingredients);
         }
 
+        if (StringUtils::isValueNotEmptyOrNull($params['recipe_name'])) {
+            $qb->addCriteria(CriteriaUtils::createFilterByRecetteName($params['recipe_name']));
+        }
+
         return $qb;
     }
 
@@ -146,7 +150,7 @@ class RecipeRepository extends ServiceEntityRepository implements RepositoryInte
      */
     private function findIngredientInListOfIngredients(QueryBuilder $qb, array $ingredients): QueryBuilder
     {
-
+        //TODO il faut que la requete recupère les recette ayant au minimum les ingrédients dans le tableau
         $qb->andWhere($qb->expr()->in('ingredient', ':ingredients'))
             ->setParameter('ingredients', $ingredients);
 

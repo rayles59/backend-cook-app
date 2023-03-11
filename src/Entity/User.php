@@ -39,9 +39,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $recettes;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getRecette'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getRecette'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToMany(targetEntity: Favoris::class, mappedBy: 'user')]
@@ -55,6 +57,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateOfBirth = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['getRecette'])]
+    private ?string $fullName = null;
 
     public function __construct()
     {
@@ -269,6 +275,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDateOfBirth(?\DateTimeInterface $dateOfBirth): self
     {
         $this->dateOfBirth = $dateOfBirth;
+
+        return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): self
+    {
+        $this->fullName = $fullName;
 
         return $this;
     }

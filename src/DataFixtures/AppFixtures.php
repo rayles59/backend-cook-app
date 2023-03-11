@@ -83,6 +83,7 @@ class AppFixtures extends Fixture
     {
         $user->setEmail('boddaert.gauthier@gmail.com');
         $user->setName('Gauthier');
+        $user->setFullName('Gauthier Boddaert');
         $user->setLastname('Boddaert');
         $user->setPassword($this->userPasswordHasher->hashPassword($user, "coucou"));
         $user->setRoles(['ROLE_ADMIN']);
@@ -94,6 +95,7 @@ class AppFixtures extends Fixture
         $admin->setEmail('gboddaert@insitaction.com');
         $admin->setName('Gauthier');
         $admin->setLastname('Boddaert');
+        $admin->setFullName('Gauthier Boddaert');
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, "coucou"));
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setDateOfBirth(new \DateTime());
