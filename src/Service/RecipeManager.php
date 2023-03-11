@@ -51,13 +51,13 @@ class RecipeManager implements RecipeManagerInterface
         $this->recipeStepManager = $recipeStepManager;
     }
 
-    public function createRecipeFromRequest(array $request): void
+    public function createRecipeFromRequest(array $request, User $user): void
     {
         $recipe = new Recipe();
         $recipe->setName($request['name']);
         $recipe->setDescriptions($request['description']);
         //$recipe->setUsers($this->userRepository->findOneBy($this->>getUser())));
-        $recipe->setUsers($this->userRepository->findOneBy(['email' => $request['email']]));
+        $recipe->setUsers($user);
         $recipe->setNumberOfPersons($request['number_of_persons']);
         $recipe->setGlucide($request['glucide']);
         $recipe->setProteine($request['proteine']);

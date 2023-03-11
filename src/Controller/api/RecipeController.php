@@ -97,7 +97,7 @@ class RecipeController extends AbstractController
     public function postRecipe(Request $request): JsonResponse
     {
         try {
-            $this->recipeManager->createRecipeFromRequest($request->toArray());
+            $this->recipeManager->createRecipeFromRequest($request->toArray(), $this->getUser());
             return new JsonResponse($this->serializer->serialize(
                 'You have add a new Recipe !'
                 ,'json',[]),
