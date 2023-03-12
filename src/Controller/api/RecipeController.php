@@ -63,7 +63,6 @@ class RecipeController extends AbstractController
     public function findOneRecipe(int $id): JsonResponse
     {
         $recipe = $this->recipeRepository->findOneBy(['id' => $id]);
-        dd($recipe->getLikes()->first());
         if(null === $recipe)
             return new JsonResponse($this->serializer->serialize("Recipe not found",'json'),Response::HTTP_INTERNAL_SERVER_ERROR, [], true);
 
