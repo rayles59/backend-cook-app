@@ -21,9 +21,6 @@ class Image
     #[ORM\ManyToMany(targetEntity: RecipeStep::class, mappedBy: 'image')]
     private Collection $recipeSteps;
 
-    #[ORM\OneToOne(mappedBy: 'image', cascade: ['persist', 'remove'])]
-    private ?Category $category = null;
-
     public function __construct()
     {
         $this->recipeSteps = new ArrayCollection();
@@ -74,28 +71,6 @@ class Image
         if ($this->recipeSteps->removeElement($recipeStep)) {
             $recipeStep->removeImage($this);
         }
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($category === null && $this->category !== null) {
-            $this->category->setImage(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($category !== null && $category->getImage() !== $this) {
-            $category->setImage($this);
-        }
-
-        $this->category = $category;
 
         return $this;
     }

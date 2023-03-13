@@ -24,8 +24,8 @@ class Category
     #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'category')]
     private Collection $recettes;
 
-    #[ORM\OneToOne(inversedBy: 'category', cascade: ['persist', 'remove'])]
-    private ?Image $image = null;
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -81,12 +81,12 @@ class Category
         return $this;
     }
 
-    public function getImage(): ?Image
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setImage(?Image $image): self
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 

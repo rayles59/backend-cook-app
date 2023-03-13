@@ -2,6 +2,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
+use App\Entity\Ingredient;
+use App\Entity\Recipe;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -38,7 +42,11 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         return [
-            MenuItem::section('item')
+            MenuItem::linkToCrud('Category', '', Category::class),
+            MenuItem::linkToCrud('Recipe', '', Recipe::class),
+            MenuItem::linkToCrud('Ingredient', '', Ingredient::class),
+            MenuItem::linkToCrud('User', '', User::class),
+
         ];
     }
 }
