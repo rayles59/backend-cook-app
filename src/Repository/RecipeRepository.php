@@ -11,6 +11,7 @@ use App\Service\Utils\CriteriaUtils;
 use App\Service\Utils\StringUtils;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -187,5 +188,20 @@ class RecipeRepository extends ServiceEntityRepository implements RepositoryInte
             ->addCriteria(CriteriaUtils::createRecipeByCategory($category))
             ->getQuery()
             ->getResult();
+    }
+
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findRecipeWithBetterScoreOfLike()
+    {
+        return $this->createQueryBuilder('recipe')
+            ->leftJoin('recipe.likes', 'likes')
+            ->groupBy('recipe.id')
+            ->orderBy('COUNT(likes.isLike)', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

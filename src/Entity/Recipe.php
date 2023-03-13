@@ -22,23 +22,23 @@ class Recipe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?string $descriptions = null;
 
     #[ORM\ManyToOne(inversedBy: 'recettes')]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?user $users = null;
 
     #[ORM\ManyToMany(targetEntity: category::class, inversedBy: 'recettes')]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private Collection $category;
 
     #[ORM\ManyToMany(targetEntity: Favoris::class, mappedBy: 'recette')]
@@ -62,7 +62,7 @@ class Recipe
     private Collection $recipeStep;
 
     #[ORM\Column]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?int $numberOfPersons = null;
 
     #[ORM\Column(nullable: true)]

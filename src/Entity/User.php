@@ -23,7 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -39,11 +39,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $recettes;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToMany(targetEntity: Favoris::class, mappedBy: 'user')]
@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $dateOfBirth = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?string $fullName = null;
 
     public function __construct()

@@ -57,19 +57,4 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->save($user, true);
     }
-
-    /**
-     * @throws NonUniqueResultException
-     */
-    public function findBestChefByRecipePosted(): User
-    {
-
-        return $this->createQueryBuilder('user')
-            ->innerJoin('user.recettes', 'recipe')
-            ->groupBy('recipe.id')
-            ->orderBy('COUNT(recipe.users)', 'ASC')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-    }
 }

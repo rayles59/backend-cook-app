@@ -2,21 +2,13 @@
 
 namespace App\Controller\api;
 
-use App\Entity\Category;
-use App\Entity\Recipe;
 use App\Repository\CategoryRepository;
 use App\Repository\RecipeRepository;
-use App\Repository\UserRepository;
-use App\Service\RecipeManager;
 use App\Service\RecipeManagerInterface;
-use App\Service\UserManager;
 use App\Service\UserManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use MongoDB\Driver\Exception\ExecutionTimeoutException;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -28,28 +20,22 @@ class RecipeController extends AbstractController
     private RecipeRepository $recipeRepository;
     private EntityManagerInterface $entityManager;
     private SerializerInterface $serializer;
-    private UserRepository $userRepository;
-    private UserManagerInterface $userManager;
     private CategoryRepository $categoryRepository;
     private RecipeManagerInterface $recipeManager;
 
     public function __construct(
         CategoryRepository     $categoryRepository,
-        UserRepository         $userRepository,
         RecipeRepository       $recipeRepository,
         SerializerInterface    $serializer,
         EntityManagerInterface $entityManager,
         RecipeManagerInterface $recipeManager,
-        UserManagerInterface $userManager
     )
     {
         $this->recipeRepository = $recipeRepository;
         $this->categoryRepository = $categoryRepository;
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
         $this->recipeManager = $recipeManager;
-        $this->userManager = $userManager;
     }
 
     #[Route('/recipe', name: 'app_recipe', methods: 'GET')]
@@ -138,31 +124,5 @@ class RecipeController extends AbstractController
             );
         }
         return new JsonResponse('', Response::HTTP_OK);
-    }
-
-    //TODO Il faut que cette route soit accesible sans Token
-    #[Route('/user/bestChef', name: 'app_api_recipe_getbestchef', methods: 'GET')]
-    public function getBestChefFromHomePage() : JsonResponse
-    {
-        //pour demain, il faut changer le retour api afin de récupèrer la dernière recette poster.
-        try{
-            return new JsonResponse(
-                $this->serializer->serialize(
-                    $this->userManager->getBestChef(),
-                    'json',
-                    ["groups" => 'getRecette']
-                ), Response::HTTP_OK, [], true
-            );
-        }catch (\Exception $exception)
-        {
-            return new JsonResponse(
-                $this->serializer->serialize(
-                    $exception->getMessage(),
-                    'json'),
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                [],
-                true
-            );
-        }
     }
 }

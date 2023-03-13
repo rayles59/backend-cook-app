@@ -18,7 +18,7 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getRecette'])]
+    #[Groups(['getRecette', 'user:chef'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'category')]

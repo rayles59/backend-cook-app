@@ -4,21 +4,10 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\ErrorHandler\Error\UndefinedFunctionError;
 
-class UserManager implements UserManagerInterface
+class UserManager
 {
-    private UserRepository $userRepository;
 
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
-
-    public function getBestChef(): User
-    {
-
-        return $this->userRepository->findBestChefByRecipePosted();
-    }
 }
