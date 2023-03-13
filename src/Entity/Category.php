@@ -24,6 +24,9 @@ class Category
     #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'category')]
     private Collection $recettes;
 
+    #[ORM\OneToOne(inversedBy: 'category', cascade: ['persist', 'remove'])]
+    private ?Image $image = null;
+
     public function __construct()
     {
         $this->recettes = new ArrayCollection();
@@ -74,6 +77,18 @@ class Category
         if ($this->recettes->removeElement($recette)) {
             $recette->removeCategory($this);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
