@@ -22,14 +22,17 @@ class  CategoryController extends AbstractController
 {
     private CategoryRepository $categoryRepository;
     private SerializerInterface $serializer;
+    private RecipeManagerInterface $recipeManager;
 
     public function __construct(
-        CategoryRepository  $categoryRepository,
-        SerializerInterface $serializer
+        CategoryRepository     $categoryRepository,
+        SerializerInterface    $serializer,
+        RecipeManagerInterface $recipeManager,
     )
     {
         $this->categoryRepository = $categoryRepository;
         $this->serializer = $serializer;
+        $this->recipeManager = $recipeManager;
     }
 
     #[Route('/categories', name: 'all_categories', methods: ['GET'])]
@@ -49,18 +52,17 @@ class  CategoryController extends AbstractController
     {
         $category = $this->categoryRepository->find($id);
 
-        if(null === $category)
-        {
+        if (null === $category) {
             return new JsonResponse(
                 $this->serializer->serialize(
                     'category not found',
                     'json'
-                ),Response::HTTP_NOT_FOUND, [], true);
+                ), Response::HTTP_NOT_FOUND, [], true);
         }
 
         return new JsonResponse(
             $this->serializer->serialize(
-                $category,
+                $this->recipeManager->getRecipeByCategories($category),
                 'json',
                 ["groups" => "getRecette"]
             ), Response::HTTP_OK, [], true

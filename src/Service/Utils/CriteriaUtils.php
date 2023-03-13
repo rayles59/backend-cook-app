@@ -2,6 +2,7 @@
 
 namespace App\Service\Utils;
 
+use App\Entity\Category;
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
 use Doctrine\Common\Collections\Criteria;
@@ -19,4 +20,10 @@ class CriteriaUtils
             ->where(Criteria::expr()->contains('user.fullName', '%' . $name . '%'));
     }
 
+    public static function createRecipeByCategory(Category $category): Criteria
+    {
+        return Criteria::create()->andWhere(
+            Criteria::expr()->eq('category', $category)
+        );
+    }
 }

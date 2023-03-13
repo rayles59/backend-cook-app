@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
 use App\Entity\User;
@@ -178,5 +179,13 @@ class RecipeRepository extends ServiceEntityRepository implements RepositoryInte
             ->setParameter('ingredients', $ingredients);
 
         return $qb;
+    }
+    public function findRecipeByCategory(Category $category): array
+    {
+        return $this->createQueryBuilder('recipe')
+            ->leftJoin('recipe.category', 'category')
+            ->addCriteria(CriteriaUtils::createRecipeByCategory($category))
+            ->getQuery()
+            ->getResult();
     }
 }

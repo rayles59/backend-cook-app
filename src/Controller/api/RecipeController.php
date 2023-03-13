@@ -9,6 +9,8 @@ use App\Repository\RecipeRepository;
 use App\Repository\UserRepository;
 use App\Service\RecipeManager;
 use App\Service\RecipeManagerInterface;
+use App\Service\UserManager;
+use App\Service\UserManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use MongoDB\Driver\Exception\ExecutionTimeoutException;
 use PHPUnit\Util\Json;
@@ -27,6 +29,7 @@ class RecipeController extends AbstractController
     private EntityManagerInterface $entityManager;
     private SerializerInterface $serializer;
     private UserRepository $userRepository;
+    private UserManagerInterface $userManager;
     private CategoryRepository $categoryRepository;
     private RecipeManagerInterface $recipeManager;
 
@@ -36,7 +39,8 @@ class RecipeController extends AbstractController
         RecipeRepository       $recipeRepository,
         SerializerInterface    $serializer,
         EntityManagerInterface $entityManager,
-        RecipeManagerInterface $recipeManager
+        RecipeManagerInterface $recipeManager,
+        UserManagerInterface $userManager
     )
     {
         $this->recipeRepository = $recipeRepository;
@@ -45,6 +49,7 @@ class RecipeController extends AbstractController
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->recipeManager = $recipeManager;
+        $this->userManager = $userManager;
     }
 
     #[Route('/recipe', name: 'app_recipe', methods: 'GET')]
@@ -135,4 +140,29 @@ class RecipeController extends AbstractController
         return new JsonResponse('', Response::HTTP_OK);
     }
 
+    //TODO Il faut que cette route soit accesible sans Token
+    #[Route('/user/bestChef', name: 'app_api_recipe_getbestchef', methods: 'GET')]
+    public function getBestChefFromHomePage() : JsonResponse
+    {
+        //pour demain, il faut changer le retour api afin de récupèrer la dernière recette poster.
+        try{
+            return new JsonResponse(
+                $this->serializer->serialize(
+                    $this->userManager->getBestChef(),
+                    'json',
+                    ["groups" => 'getRecette']
+                ), Response::HTTP_OK, [], true
+            );
+        }catch (\Exception $exception)
+        {
+            return new JsonResponse(
+                $this->serializer->serialize(
+                    $exception->getMessage(),
+                    'json'),
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                [],
+                true
+            );
+        }
+    }
 }

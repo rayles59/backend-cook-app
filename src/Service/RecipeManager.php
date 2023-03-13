@@ -3,25 +3,18 @@
 namespace App\Service;
 
 use App\Entity\Category;
-use App\Entity\Favoris;
-use App\Entity\Like;
 use App\Entity\Recipe;
 use App\Entity\User;
+use App\Repository\CategoryRepository;
 use App\Repository\RecipeRepository;
 use App\Repository\RepositoryInterface;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class RecipeManager implements RecipeManagerInterface
 {
     private RecipeRepository $recipeRepository;
-    private UserRepository $userRepository;
-    private ImageManagerInterface $imageManager;
-    private string $image_directory;
-    private RepositoryInterface $repository;
-    private EntityManagerInterface $entityManager;
+    private CategoryRepository $categoryRepository;
     private IngredientManagerInterface $ingredientManager;
     private CategoryManagerInterface $categoryManager;
     private RecipeStepManagerInterface $recipeStepManager;
@@ -29,25 +22,17 @@ class RecipeManager implements RecipeManagerInterface
     public function __construct
     (
         RecipeRepository           $recipeRepository,
-        ImageManagerInterface      $imageManager,
-        RepositoryInterface        $repository,
-        EntityManagerInterface     $entityManager,
-        UserRepository             $userRepository,
         IngredientManagerInterface $ingredientManager,
         CategoryManagerInterface   $categoryManager,
         RecipeStepManagerInterface $recipeStepManager,
-        string                     $image_directory,
+        CategoryRepository         $categoryRepository,
 
     )
     {
         $this->recipeRepository = $recipeRepository;
-        $this->imageManager = $imageManager;
-        $this->image_directory = $image_directory;
-        $this->repository = $repository;
-        $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
         $this->ingredientManager = $ingredientManager;
         $this->categoryManager = $categoryManager;
+        $this->categoryRepository = $categoryRepository;
         $this->recipeStepManager = $recipeStepManager;
     }
 
@@ -56,7 +41,6 @@ class RecipeManager implements RecipeManagerInterface
         $recipe = new Recipe();
         $recipe->setName($request['name']);
         $recipe->setDescriptions($request['description']);
-        //$recipe->setUsers($this->userRepository->findOneBy($this->>getUser())));
         $recipe->setUsers($user);
         $recipe->setNumberOfPersons($request['number_of_persons']);
         $recipe->setGlucide($request['glucide']);
@@ -93,4 +77,11 @@ class RecipeManager implements RecipeManagerInterface
         return null;
     }
 
+    /**
+     * @return Recipe[]
+     */
+    public function getRecipeByCategories(Category $category): array
+    {
+        return $this->recipeRepository->findRecipeByCategory($category);
+    }
 }
