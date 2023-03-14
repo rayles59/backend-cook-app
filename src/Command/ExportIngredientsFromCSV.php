@@ -26,7 +26,7 @@ class ExportIngredientsFromCSV extends Command
     }
 
     // the command description shown when running "php bin/console list"
-    protected static $defaultDescription = 'Import ingredients from XLSX file. The value who is insert into database is for 100g of ingredient';
+   // protected static $defaultDescription = 'Import ingredients from XLSX file. The value who is insert into database is for 100g of ingredient';
 
     // ...
     protected function configure(): void

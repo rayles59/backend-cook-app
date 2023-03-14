@@ -27,7 +27,7 @@ class ImportDataOfIngredientinXlsx extends Command
     }
 
     // the command description shown when running "php bin/console list"
-    protected static $defaultDescription = 'Import data ingredients to XLSX file';
+    //protected static $defaultDescription = 'Import data ingredients to XLSX file';
 
     // ...
     protected function configure(): void
