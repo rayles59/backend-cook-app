@@ -25,6 +25,9 @@ class Log
     #[ORM\Column(length: 255)]
     private ?string $action = null;
 
+    #[ORM\Column]
+    private ?int $entity_id = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Log
     public function setAction(string $action): self
     {
         $this->action = $action;
+
+        return $this;
+    }
+
+    public function getEntityId(): ?int
+    {
+        return $this->entity_id;
+    }
+
+    public function setEntityId(int $entity_id): self
+    {
+        $this->entity_id = $entity_id;
 
         return $this;
     }

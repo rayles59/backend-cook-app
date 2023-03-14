@@ -33,5 +33,11 @@ services:
             - '@security.password_hasher'
         tags:
             - { name: kernel.event_listener, event: league.oauth2_server.event.user_resolve, method: onUserResolve }
+
+    App\EventListener\LogEventSubscriber:
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postUpdate }
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
